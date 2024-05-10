@@ -236,12 +236,13 @@ class Spikformer(nn.Module):
         x = patch_embed(x)
         for blk in block:
             x = blk(x)
-        return x.mean(3)
+        #여기서 x가 T x B x D x N인가?
+        return x.mean(3) # 그럼 mean(3)은 N을 평균내는 것이고?
 
     def forward(self, x):
         x = x.permute(1, 0, 2, 3, 4)  # [T, N, 2, *, *]
         x = self.forward_features(x)
-        x = self.head(x.mean(0))
+        x = self.head(x.mean(0)) # T x B x D x N -> B x D 인거같은데
         return x
 
 
